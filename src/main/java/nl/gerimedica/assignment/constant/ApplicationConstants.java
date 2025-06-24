@@ -13,4 +13,5 @@ public class ApplicationConstants {
     public static final String GET_LATEST_APPOINTMENTS_BY_SSN_V1_PATH = "/api/v1/appointments/latest";
     public static final String DELETE_APPOINTMENTS_V1_PATH = "/api/v1/appointments";
 
+
 }

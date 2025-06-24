@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    @Query("SELECT a FROM Appointment a WHERE a.patient.ssn = :ssn ORDER BY a.date DESC")
+    @Query("SELECT a FROM Appointment a WHERE a.patient.ssn = :ssn ORDER BY a.dateTime DESC")
     List<Appointment> findLatestByPatientSsn(@Param("ssn") String ssn, Pageable pageable);
 
     List<Appointment> findByReasonIgnoreCaseContaining(String reasonKeyword);

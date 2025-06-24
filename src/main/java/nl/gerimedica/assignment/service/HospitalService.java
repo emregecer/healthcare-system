@@ -25,8 +25,8 @@ import java.util.Optional;
 @Slf4j
 public class HospitalService {
 
-    private final PatientRepository patientRepo;
-    private final AppointmentRepository appointmentRepo;
+    private final PatientRepository patientRepository;
+    private final AppointmentRepository appointmentRepository;
     private final UsageTracker usageTracker;
 
     @Transactional
@@ -37,7 +37,7 @@ public class HospitalService {
                 request.getAppointments(), patient
         );
 
-        List<Appointment> savedAppointments = appointmentRepo.saveAll(appointments);
+        List<Appointment> savedAppointments = appointmentRepository.saveAll(appointments);
         savedAppointments.forEach(appt -> log.info("Created appointment for reason: {} [Date: {}] [Patient SSN: {}]",
                 appt.getReason(), appt.getDateTime(), appt.getPatient().getSsn())
         );
@@ -48,7 +48,7 @@ public class HospitalService {
     }
 
     public List<AppointmentResponseDto> getAppointmentsByReason(String reasonKeyword) {
-        List<AppointmentResponseDto> matchedAppointments = appointmentRepo.findByReasonIgnoreCaseContaining(reasonKeyword).stream()
+        List<AppointmentResponseDto> matchedAppointments = appointmentRepository.findByReasonIgnoreCaseContaining(reasonKeyword).stream()
                 .map(AppointmentResponseMapper.INSTANCE::toDto)
                 .toList();
 
@@ -58,32 +58,32 @@ public class HospitalService {
     }
 
     public void deleteAppointmentsBySSN(String ssn) {
-        if (patientRepo.findBySsn(ssn).isEmpty()) {
+        if (patientRepository.findBySsn(ssn).isEmpty()) {
             log.warn("No patient found with SSN {}, nothing to delete", ssn);
             return;
         }
 
-        appointmentRepo.deleteByPatientSsn(ssn);
+        appointmentRepository.deleteByPatientSsn(ssn);
         log.info("Deleted all appointments for patient with SSN {}", ssn);
 
         usageTracker.record("Delete appoints by SSN");
     }
 
     public AppointmentResponseDto findLatestAppointmentBySSN(String ssn) {
-        return appointmentRepo.findLatestByPatientSsn(ssn, PageRequest.of(0, 1)).stream()
+        return appointmentRepository.findLatestByPatientSsn(ssn, PageRequest.of(0, 1)).stream()
                 .findFirst()
                 .map(AppointmentResponseMapper.INSTANCE::toDto)
                 .orElseThrow(() -> new BusinessException(ErrorType.APPOINTMENT_NOT_FOUND_FOR_SSN));
     }
 
     private Patient findOrCreatePatient(String ssn, String patientName) {
-        Optional<Patient> optionalPatient = patientRepo.findBySsn(ssn);
+        Optional<Patient> optionalPatient = patientRepository.findBySsn(ssn);
         Patient patient;
         if (optionalPatient.isPresent()) {
             patient = optionalPatient.get();
             log.info("Existing patient found, SSN: {}", patient.getSsn());
         } else {
-            patient = patientRepo.save(new Patient(patientName, ssn));
+            patient = patientRepository.save(new Patient(patientName, ssn));
             log.info("Created new patient with SSN: {}", ssn);
         }
 
