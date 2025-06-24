@@ -1,12 +1,12 @@
 package nl.gerimedica.assignment.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.gerimedica.assignment.entity.Appointment;
 import nl.gerimedica.assignment.entity.Patient;
 import nl.gerimedica.assignment.logging.UsageTracker;
 import nl.gerimedica.assignment.repository.AppointmentRepository;
 import nl.gerimedica.assignment.repository.PatientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,14 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class HospitalService {
-    @Autowired
-    private PatientRepository patientRepo;
-    @Autowired
-    private AppointmentRepository appointmentRepo;
-    @Autowired
-    private UsageTracker usageTracker;
+
+    private final PatientRepository patientRepo;
+    private final AppointmentRepository appointmentRepo;
+    private final UsageTracker usageTracker;
 
     public List<Appointment> bulkCreateAppointments(String patientName,
                                                     String ssn,
@@ -50,7 +49,7 @@ public class HospitalService {
         }
 
         for (Appointment appt : createdAppointments) {
-            log.info("Created appointment for reason: {} [Date: {}] [Patient SSN: {}]", appt.reason, appt.date, appt.patient.ssn );
+            log.info("Created appointment for reason: {} [Date: {}] [Patient SSN: {}]", appt.reason, appt.date, appt.patient.ssn);
         }
 
         usageTracker.record("Bulk create appointments");

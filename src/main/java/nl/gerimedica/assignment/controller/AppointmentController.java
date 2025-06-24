@@ -1,9 +1,9 @@
 package nl.gerimedica.assignment.controller;
 
+import lombok.RequiredArgsConstructor;
 import nl.gerimedica.assignment.entity.Appointment;
 import nl.gerimedica.assignment.logging.UsageTracker;
 import nl.gerimedica.assignment.service.HospitalService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,14 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 public class AppointmentController {
 
-    @Autowired
-    private HospitalService hospitalService;
+    private final HospitalService hospitalService;
 
-    @Autowired
-    private UsageTracker usageTracker;
+    private final UsageTracker usageTracker;
 
     /**
      * Example: {

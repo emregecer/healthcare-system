@@ -45,3 +45,8 @@ Below are the primary entities you’ll find in this codebase:
 
 2. HospitalUtils have been replaced with a UsageTracker component as it is a singleton class and counter has been changed 
 to AtomicInteger for thread-safety purposes.
+
+3. Lombok annotations like @Getter, @Setter, @EqualsWithHashCode, @NoArgConstructor, @RequiredArgConstructor have been added to relevant classes to reduce boilerplate code.
+@Autowired annotations have been replaced with constructor injection to improve testability and reduce the risk of null pointer exceptions.
+
+4. 
