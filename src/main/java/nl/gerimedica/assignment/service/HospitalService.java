@@ -3,9 +3,9 @@ package nl.gerimedica.assignment.service;
 import lombok.extern.slf4j.Slf4j;
 import nl.gerimedica.assignment.entity.Appointment;
 import nl.gerimedica.assignment.entity.Patient;
+import nl.gerimedica.assignment.logging.UsageTracker;
 import nl.gerimedica.assignment.repository.AppointmentRepository;
 import nl.gerimedica.assignment.repository.PatientRepository;
-import nl.gerimedica.assignment.util.HospitalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,16 +17,16 @@ import java.util.List;
 @Slf4j
 public class HospitalService {
     @Autowired
-    PatientRepository patientRepo;
+    private PatientRepository patientRepo;
     @Autowired
-    AppointmentRepository appointmentRepo;
+    private AppointmentRepository appointmentRepo;
+    @Autowired
+    private UsageTracker usageTracker;
 
-    public List<Appointment> bulkCreateAppointments(
-            String patientName,
-            String ssn,
-            List<String> reasons,
-            List<String> dates
-    ) {
+    public List<Appointment> bulkCreateAppointments(String patientName,
+                                                    String ssn,
+                                                    List<String> reasons,
+                                                    List<String> dates) {
         Patient found = findPatientBySSN(ssn);
         if (found == null) {
             log.info("Creating new patient with SSN: {}", ssn);
@@ -53,7 +53,7 @@ public class HospitalService {
             log.info("Created appointment for reason: {} [Date: {}] [Patient SSN: {}]", appt.reason, appt.date, appt.patient.ssn );
         }
 
-        HospitalUtils.recordUsage("Bulk create appointments");
+        usageTracker.record("Bulk create appointments");
 
         return createdAppointments;
     }
@@ -90,8 +90,7 @@ public class HospitalService {
             }
         }
 
-        HospitalUtils utils = new HospitalUtils();
-        utils.recordUsage("Get appointments by reason");
+        usageTracker.record("Get appointments by reason");
 
         return finalList;
     }

@@ -39,3 +39,9 @@ Below are the primary entities you’ll find in this codebase:
 3. **Propose and/or implement improvements**: Refactor, rewrite, or reorganize parts of the code to showcase your approach.
 
 ---
+
+## Changes Applied during the Assignment
+1. Packaging structure was changed to follow the standard convention (repository / service / controller etc
+
+2. HospitalUtils have been replaced with a UsageTracker component as it is a singleton class and counter has been changed 
+to AtomicInteger for thread-safety purposes.

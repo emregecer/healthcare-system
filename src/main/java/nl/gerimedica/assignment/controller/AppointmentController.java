@@ -1,8 +1,8 @@
 package nl.gerimedica.assignment.controller;
 
 import nl.gerimedica.assignment.entity.Appointment;
+import nl.gerimedica.assignment.logging.UsageTracker;
 import nl.gerimedica.assignment.service.HospitalService;
-import nl.gerimedica.assignment.util.HospitalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,10 @@ import java.util.Map;
 public class AppointmentController {
 
     @Autowired
-    HospitalService hospitalService;
+    private HospitalService hospitalService;
+
+    @Autowired
+    private UsageTracker usageTracker;
 
     /**
      * Example: {
@@ -25,15 +28,13 @@ public class AppointmentController {
      * }
      */
     @PostMapping("/bulk-appointments")
-    public ResponseEntity<List<Appointment>> createBulkAppointments(
-            @RequestParam String patientName,
-            @RequestParam String ssn,
-            @RequestBody Map<String, List<String>> payload
-    ) {
+    public ResponseEntity<List<Appointment>> createBulkAppointments(@RequestParam String patientName,
+                                                                    @RequestParam String ssn,
+                                                                    @RequestBody Map<String, List<String>> payload) {
         List<String> reasons = payload.get("reasons");
         List<String> dates = payload.get("dates");
 
-        HospitalUtils.recordUsage("Controller triggered bulk appointments creation");
+        usageTracker.record("Controller triggered bulk appointments creation");
 
         List<Appointment> created = hospitalService.bulkCreateAppointments(patientName, ssn, reasons, dates);
         return new ResponseEntity<>(created, HttpStatus.OK);
