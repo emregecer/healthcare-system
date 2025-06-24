@@ -17,14 +17,14 @@ public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
-    public String name;
+    private String name;
 
-    public String ssn;
+    private String ssn;
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
-    public List<Appointment> appointments;
+    private List<Appointment> appointments;
 
     public Patient(String name, String ssn) {
         this.name = name;
