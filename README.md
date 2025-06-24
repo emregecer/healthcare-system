@@ -49,4 +49,4 @@ to AtomicInteger for thread-safety purposes.
 3. Lombok annotations like @Getter, @Setter, @EqualsWithHashCode, @NoArgConstructor, @RequiredArgConstructor have been added to relevant classes to reduce boilerplate code.
 @Autowired annotations have been replaced with constructor injection to improve testability and reduce the risk of null pointer exceptions.
 
-4. 
+4. Swagger dependency have been added for API documentation and testing purposes.
