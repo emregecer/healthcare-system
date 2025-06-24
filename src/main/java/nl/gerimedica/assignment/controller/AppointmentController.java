@@ -1,5 +1,8 @@
-package nl.gerimedica.assignment;
+package nl.gerimedica.assignment.controller;
 
+import nl.gerimedica.assignment.entity.Appointment;
+import nl.gerimedica.assignment.service.HospitalService;
+import nl.gerimedica.assignment.util.HospitalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

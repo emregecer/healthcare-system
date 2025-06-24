@@ -1,6 +1,11 @@
-package nl.gerimedica.assignment;
+package nl.gerimedica.assignment.service;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.gerimedica.assignment.entity.Appointment;
+import nl.gerimedica.assignment.entity.Patient;
+import nl.gerimedica.assignment.repository.AppointmentRepository;
+import nl.gerimedica.assignment.repository.PatientRepository;
+import nl.gerimedica.assignment.util.HospitalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
